@@ -3,6 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.0%2B-orange.svg)](https://scikit-learn.org/)
 [![imbalanced-learn](https://img.shields.io/badge/imblearn-SMOTE-green.svg)](https://imbalanced-learn.org/)
+[![Video Walkthrough](https://img.shields.io/badge/Video-Presentation%20Walkthrough-red.svg?logo=google-drive)](https://drive.google.com/file/d/1yjZgfSiobt8aysRKmFOhU_AqoVWPaxxn/view?usp=sharing)
 [![Status](https://img.shields.io/badge/Status-Completed-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)]()
 
@@ -36,6 +37,18 @@
 - Champion SMOTE Random Forest model achieved 95 percent accuracy.
 - Purchase recency and service complaints are primary churn drivers.
 - Targeted loyalty interventions prevent nearly eighteen expected customer churns.
+
+### Project Walkthrough Video
+
+<div align="center">
+  <a href="https://drive.google.com/file/d/1yjZgfSiobt8aysRKmFOhU_AqoVWPaxxn/view?usp=sharing" target="_blank">
+    <img src="https://img.shields.io/badge/Google%20Drive-Watch%20Project%20Presentation%20Video-4285F4?style=for-the-badge&logo=googledrive&logoColor=white" alt="Watch Presentation Video on Google Drive" />
+  </a>
+  <br/><br/>
+  <p>
+    🎬 <b><a href="https://drive.google.com/file/d/1yjZgfSiobt8aysRKmFOhU_AqoVWPaxxn/view?usp=sharing" target="_blank">Click here to watch the full project walkthrough presentation on Google Drive</a></b>
+  </p>
+</div>
 
 ---
 
@@ -295,9 +308,10 @@ tailwyndz/
 
 ### Generated Data Deliverables
 
-1. **`test_customer_churn_predictions.csv`**: Contains `CUSTOMER_ID`, `ACTUAL_CHURN`, `CHURN_PROBABILITY`, `PREDICTED_CHURN`, and `RISK_LEVEL` (`High`, `Medium`, `Low`).
-2. **`best_churn_model.joblib`**: Pickled scikit-learn/imblearn pipeline containing fitted imputers, scalers, encoders, and the trained random forest estimator.
-3. **`model_evaluation_results.csv`**: Evaluation metrics across all candidates.
+1. **Presentation Video (`task4_Presentation.mp4`)**: [Watch on Google Drive](https://drive.google.com/file/d/1yjZgfSiobt8aysRKmFOhU_AqoVWPaxxn/view?usp=sharing) — Full project walkthrough video presenting the methodology, data quality audit, modeling benchmarks, and retention simulations.
+2. **`test_customer_churn_predictions.csv`**: Contains `CUSTOMER_ID`, `ACTUAL_CHURN`, `CHURN_PROBABILITY`, `PREDICTED_CHURN`, and `RISK_LEVEL` (`High`, `Medium`, `Low`).
+3. **`best_churn_model.joblib`**: Pickled scikit-learn/imblearn pipeline containing fitted imputers, scalers, encoders, and the trained random forest estimator.
+4. **`model_evaluation_results.csv`**: Evaluation metrics across all candidates.
 
 ---
 
