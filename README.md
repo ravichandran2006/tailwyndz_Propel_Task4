@@ -31,14 +31,11 @@
 
 ## 1. Executive Summary
 
-FreshBasket operates a multi-tier customer loyalty program (Gold, Platinum, Silver) across 10 metropolitan regions. Retaining active, engaged loyalty members is significantly more cost-effective than acquiring new shoppers.
-
-This project delivers a **production-ready customer churn prediction and risk prioritization system**:
-- **Objective:** Predict which retail loyalty members are at risk of churning using customer profiles, multi-month transaction histories, app/email engagement telemetry, coupon redemptions, and customer service complaint logs.
-- **Data Scope:** 2,608 customer profiles, 28,073 monthly activity logs, and verified churn ground-truth labels.
-- **Modelling Cohort:** 2,225 eligible customers (after excluding members with insufficient observation history), with an empirical churn rate of **29.75%** (662 churned vs. 1,563 retained).
-- **Champion Model:** **SMOTE + Random Forest Classifier** achieving **95.51% Accuracy**, **96.67% Precision**, **87.88% Recall**, **92.06% F1-score**, **97.53% ROC-AUC**, and **96.40% PR-AUC** on held-out test data.
-- **Business Impact:** Simulating a targeted intervention for the top 20% highest-risk members indicates an expected reduction of **~17.77 churn cases** (a 12.8% drop in overall expected churn risk across the evaluation cohort).
+- Predict retail loyalty customer churn using behavioral transaction data.
+- Evaluated 2225 eligible loyalty members across ten metropolitan regions.
+- Champion SMOTE Random Forest model achieved 95 percent accuracy.
+- Purchase recency and service complaints are primary churn drivers.
+- Targeted loyalty interventions prevent nearly eighteen expected customer churns.
 
 ---
 
@@ -50,67 +47,19 @@ The overall architecture spans raw multi-table ingestion, duplicate reconciliati
 
 ```mermaid
 flowchart TD
-    subgraph S1["1. Raw Data Ingestion"]
-        D1["Customer Profile<br/>(2,608 rows, 10 cols)"]
-        D2["Monthly Activity<br/>(28,073 rows, 12 cols)"]
-        D3["Churn Labels<br/>(2,605 rows, 6 cols)"]
-    end
-
-    subgraph S2["2. Data Cleaning & Reconciliation"]
-        C1["Exact Duplicate Removal<br/>(drop_duplicates)"]
-        C2["Text Normalization<br/>(Trim & Title-Case)"]
-        C3["Monthly Record Aggregation<br/>(Sum additive, recompute basket)"]
-        C4["Negative Spend & Return Auditing<br/>(Preserve legitimate returns)"]
-    end
-
-    subgraph S3["3. Leakage-Aware Feature Engineering"]
-        F1["Behavioral Features<br/>(Hist. spend, frequency, active months)"]
-        F2["Engagement Features<br/>(App sessions, email opens, coupon rate)"]
-        F3["Friction & Support Features<br/>(Tickets, complaint months, trend ratios)"]
-        F4["Recency & Trend Features<br/>(Recency days, Recent3 vs Prev3)"]
-        F5["Demographics & Store Tiers<br/>(Age, tenure, membership tier, city)"]
-        F6["Temporal Cutoff<br/>(Observation window strictly prior to churn)"]
-    end
-
-    subgraph S4["4. Preprocessing & Partitioning"]
-        P1["Filter Insufficient History Flag = 0<br/>(N = 2,225 eligible customers)"]
-        P2["Validation Split<br/>(Stratified / Cohort Split 80/20)"]
-        P3["ColumnTransformer Pipeline<br/>- Numeric: Median Impute + StandardScaler<br/>- Categorical: Frequent Impute + OneHotEncoder"]
-    end
-
-    subgraph S5["5. Model Training & Comparison"]
-        M1["Logistic Regression<br/>(Class Weight: Balanced)"]
-        M2["Random Forest<br/>(300 Trees, min_samples_leaf=3)"]
-        M3["SMOTE + Random Forest<br/>(Synthetic Oversampling on Train Only)"]
-    end
-
-    subgraph S6["6. Model Evaluation & Selection"]
-        E1["Evaluation Metrics<br/>(Accuracy, Precision, Recall, F1, ROC-AUC, PR-AUC)"]
-        E2["Confusion Matrix & Classification Reports"]
-        E3["Champion Model Selection<br/>(SMOTE + Random Forest: 95.51% Acc, 96.40% PR-AUC)"]
-    end
-
-    subgraph S7["7. Inference & Downstream Business Value"]
-        O1["Customer Predictions CSV<br/>(Risk Scores & Stratification: High/Med/Low)"]
-        O2["Permutation Feature Importance<br/>(Driver Analysis)"]
-        O3["Feature Ablation Study<br/>(Demographics vs Behaviour vs Engagement)"]
-        O4["Retention Scenario Simulation<br/>(Target top 20% risk -> 17.77 expected churns prevented)"]
-    end
-
-    D1 & D2 & D3 --> C1
-    C1 --> C2 --> C3 --> C4
-    C4 --> F1 & F2 & F3 & F4 & F5
-    F1 & F2 & F3 & F4 & F5 --> F6
-    F6 --> P1 --> P2 --> P3
-    P3 --> M1 & M2 & M3
-    M1 & M2 & M3 --> E1 --> E2 --> E3
-    E3 --> O1 & O2 & O3 & O4
+    A["<b>1. Raw Data Ingestion</b><br/>Profiles, Monthly Activity & Churn Labels"] --> B["<b>2. Cleaning & Reconciliation</b><br/>Deduplication, Return Auditing & Anomaly Fixes"]
+    B --> C["<b>3. Feature Engineering</b><br/>38 Behavioral, Recency & Friction Features"]
+    C --> D["<b>4. Preprocessing & Partitioning</b><br/>Imputation, Encoding, Scaling & 80/20 Split"]
+    D --> E["<b>5. Model Training & Comparison</b><br/>SMOTE Oversampling + Random Forest (Champion)"]
+    E --> F["<b>6. Evaluation & Business Impact</b><br/>95.5% Accuracy, Risk Scoring & Retention Targeting"]
 ```
 
 ### Visual Architecture Diagram
 The high-resolution workflow diagram is saved in the repository:
 
-![FreshBasket Churn Prediction Flowchart](./Churn%20Prediction%20Flowchart.png)
+<p align="center">
+  <img src="./Churn%20Prediction%20Flowchart.png" alt="FreshBasket Churn Prediction Flowchart" width="500" />
+</p>
 
 ---
 
